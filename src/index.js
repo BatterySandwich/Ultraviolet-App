@@ -30,6 +30,17 @@ const fastify = Fastify({
 
 addSecurityHeaders(fastify); // <-- add this line after Fastify instance is created
 
+const AUTH_PASSWORD = process.env.PROXY_PASSWORD;
+
+// Add this middleware to your Fastify app
+app.addHook('onRequest', async (request, reply) => {
+  const userPassword = request.query.password;
+
+  if (userPassword !== AUTH_PASSWORD) {
+    reply.status(401).send('Unauthorized: Password required.');
+  }
+});
+
 fastify.register(fastifyStatic, {
 	root: publicPath,
 	decorateReply: true,
