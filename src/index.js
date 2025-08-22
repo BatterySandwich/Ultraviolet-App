@@ -11,6 +11,8 @@ import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 
+import { addSecurityHeaders } from './security-headers.js'; // add this after your other imports
+
 const fastify = Fastify({
 	serverFactory: (handler) => {
 		return createServer()
@@ -25,6 +27,8 @@ const fastify = Fastify({
 			});
 	},
 });
+
+addSecurityHeaders(fastify); // <-- add this line after Fastify instance is created
 
 fastify.register(fastifyStatic, {
 	root: publicPath,
